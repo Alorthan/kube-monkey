@@ -90,7 +90,7 @@ func TestCalculateKillTimeRandom(t *testing.T) {
 	killtime := CalculateKillTime()
 
 	scheduledTime := func() (success bool) {
-		if killtime.Hour() >= config.StartHour() && killtime.Hour() <= config.EndHour() {
+		if killtime.Before(time.Now().Add(time.Duration(config.RunInterval()) * time.Minute)) {
 			success = true
 		}
 		return

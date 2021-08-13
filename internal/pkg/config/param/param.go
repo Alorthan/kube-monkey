@@ -12,12 +12,12 @@ const (
 	// Default: America/Los_Angeles
 	Timezone = "kubemonkey.time_zone"
 
-	// RunHour specifies the hour of the weekday
-	// when the scheduler should run to schedule terminations
-	// Must be less than StartHour, and [0,23]
+	// RunInterval specifies the interval in minutes
+	// between each run of termination scheduling
+	// Must be in and ]0,600[
 	// Type: int
-	// Default: 8
-	RunHour = "kubemonkey.run_hour"
+	// Default: 10
+	RunInterval = "kubemonkey.run_interval"
 
 	// StartHour specifies the hour beginning at
 	// which pod terminations may occur

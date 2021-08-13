@@ -52,33 +52,27 @@ func TestNextRuntime(t *testing.T) {
 	})
 	defer monkey.Unpatch(time.Now)
 
-	r := 13
-	monday := time.Date(2018, 4, 16, r, 0, 0, 0, time.UTC)
-	assert.Equalf(t, NextRuntime(time.UTC, r), monday, "Expected to be run today if today is a weekday and there is time for it")
-
-	r = 1
-	assert.Equalf(t, NextRuntime(time.UTC, r), monday.Add(time.Hour*12), "Expected to be run next weekday if today is a weekday and there is not time for it")
+	monday := time.Date(2018, 4, 16, 12, 0, 0, 0, time.UTC)
+	assert.Equalf(t, NextRuntime(time.UTC, 13), monday.Add(13*time.Minute), "Expected to be run today if today is a weekday and there is time for it")
 
 	sunday := time.Date(2018, 4, 15, 0, 0, 0, 0, time.UTC)
 	monkey.Patch(time.Now, func() time.Time {
 		return sunday
 	})
 
-	assert.Equalf(t, NextRuntime(time.UTC, 0), sunday.Add(time.Hour*24), "Expected to be run next weekday if today is a weekend day")
+	assert.Equalf(t, NextRuntime(time.UTC, 10), sunday.Add(time.Hour*24), "Expected to be run next weekday if today is a weekend day")
 }
 
 func TestRandomTimeInRange(t *testing.T) {
-	loc := time.UTC
-
 	monkey.Patch(time.Now, func() time.Time {
 		return time.Date(2018, 4, 16, 12, 0, 0, 0, time.UTC)
 	})
 	defer monkey.Unpatch(time.Now)
 
-	randomTime := RandomTimeInRange(10, 12, loc)
+	randomTime := RandomTimeInRange(10, time.UTC)
 
 	scheduledTime := func() (success bool) {
-		if randomTime.Hour() >= 10 && randomTime.Hour() <= 12 {
+		if randomTime.Minute() >= 0 && randomTime.Minute() <= 10 {
 			success = true
 		}
 		return

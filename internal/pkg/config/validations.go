@@ -8,10 +8,10 @@ import (
 )
 
 func ValidateConfigs() error {
-	// RunHour should be [0, 23]
-	runHour := RunHour()
-	if !IsValidHour(runHour) {
-		return fmt.Errorf("RunHour: %s is outside valid range of [0,23]", param.RunHour)
+	// RunInterval should be ]0,600]
+	runInterval := RunInterval()
+	if !IsValidInterval(runInterval) {
+		return fmt.Errorf("RunInterval: %s is outside valid range of ]0,600]", param.RunInterval)
 	}
 
 	// StartHour should be [0, 23]
@@ -31,11 +31,6 @@ func ValidateConfigs() error {
 		return fmt.Errorf("StartHour: %s must be less than %s", param.StartHour, param.EndHour)
 	}
 
-	// RunHour should be < StartHour
-	if !(runHour < startHour) {
-		return fmt.Errorf("RunHour: %s should be less than %s", param.RunHour, param.StartHour)
-	}
-
 	notificationsReceiver := NotificationsAttacks()
 
 	// Notification headers should be in a valid format
@@ -50,6 +45,10 @@ func ValidateConfigs() error {
 
 func IsValidHour(hour int) bool {
 	return hour >= 0 && hour < 24
+}
+
+func IsValidInterval(interval int) bool {
+	return interval > 0 && interval <= 600
 }
 
 func isValidHeader(header string) bool {

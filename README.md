@@ -25,7 +25,7 @@ kube-monkey works on an opt-in model and will only schedule terminations for Kub
 Opt-in is done by setting the following labels on a k8s app:
 
 **`kube-monkey/enabled`**: Set to **`"enabled"`** to opt-in to kube-monkey  
-**`kube-monkey/mtbf`**: Mean time between failure (in days). For example, if set to **`"3"`**, the k8s app can expect to have a Pod
+**`kube-monkey/mtbf`**: Mean time between failure (in hours). For example, if set to **`"3"`**, the k8s app can expect to have a Pod
 killed approximately every third weekday.  
 **`kube-monkey/identifier`**: A unique identifier for the k8s apps. This is used to identify the pods
 that belong to a k8s app as Pods inherit labels from their k8s app. So, if kube-monkey detects that app `foo` has enrolled to be a victim, kube-monkey will look for all pods that have the label `kube-monkey/identifier: foo` to determine which pods are candidates for killing. The recommendation is to set this value to be the same as the app's name.  

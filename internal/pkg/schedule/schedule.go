@@ -99,7 +99,7 @@ func CalculateKillTime() time.Time {
 		secOffset := r.Intn(60)
 		return time.Now().In(loc).Add(time.Duration(secOffset) * time.Second)
 	}
-	return calendar.RandomTimeInRange(config.StartHour(), config.EndHour(), loc)
+	return calendar.RandomTimeInRange(config.RunInterval(), loc)
 }
 
 func ShouldScheduleChaos(mtbf int) bool {

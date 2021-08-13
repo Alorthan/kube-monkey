@@ -56,7 +56,7 @@ func SetDefaults() {
 
 	viper.SetDefault(param.DryRun, true)
 	viper.SetDefault(param.Timezone, "America/Los_Angeles")
-	viper.SetDefault(param.RunHour, 8)
+	viper.SetDefault(param.RunInterval, 10)
 	viper.SetDefault(param.StartHour, 10)
 	viper.SetDefault(param.EndHour, 16)
 	viper.SetDefault(param.GracePeriodSec, 5)
@@ -117,8 +117,8 @@ func Timezone() *time.Location {
 	return location
 }
 
-func RunHour() int {
-	return viper.GetInt(param.RunHour)
+func RunInterval() int {
+	return viper.GetInt(param.RunInterval)
 }
 
 func StartHour() int {

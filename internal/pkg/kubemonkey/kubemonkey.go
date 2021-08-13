@@ -14,14 +14,14 @@ import (
 	"kube-monkey/internal/pkg/schedule"
 )
 
-func durationToNextRun(runhour int, loc *time.Location) time.Duration {
+func durationToNextRun(runInterval int, loc *time.Location) time.Duration {
 	if config.DebugEnabled() {
 		debugDelayDuration := config.DebugScheduleDelay()
 		glog.V(1).Infof("Debug mode detected!")
 		glog.V(1).Infof("Status Update: Generating next schedule in %.0f sec\n", debugDelayDuration.Seconds())
 		return debugDelayDuration
 	}
-	nextRun := calendar.NextRuntime(loc, runhour)
+	nextRun := calendar.NextRuntime(loc, runInterval)
 	glog.V(1).Infof("Status Update: Generating next schedule at %s\n", nextRun)
 	return time.Until(nextRun)
 }
@@ -45,7 +45,7 @@ func Run() error {
 
 	for {
 		// Calculate duration to sleep before next run
-		sleepDuration := durationToNextRun(config.RunHour(), config.Timezone())
+		sleepDuration := durationToNextRun(config.RunInterval(), config.Timezone())
 		time.Sleep(sleepDuration)
 
 		schedule, err := schedule.New()

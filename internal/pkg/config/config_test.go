@@ -26,7 +26,7 @@ func (s *ConfigTestSuite) TestSetDefaults() {
 
 	s.True(viper.GetBool(param.DryRun))
 	s.Equal("America/Los_Angeles", viper.GetString(param.Timezone))
-	s.Equal(8, viper.GetInt(param.RunHour))
+	s.Equal(10, viper.GetInt(param.RunInterval))
 	s.Equal(10, viper.GetInt(param.StartHour))
 	s.Equal(16, viper.GetInt(param.EndHour))
 	s.Equal(int64(5), viper.GetInt64(param.GracePeriodSec))
@@ -60,8 +60,8 @@ func (s *ConfigTestSuite) TestStartHourEnv() {
 }
 
 func (s *ConfigTestSuite) TestRunHour() {
-	viper.Set(param.RunHour, 11)
-	s.Equal(11, RunHour())
+	viper.Set(param.RunInterval, 11)
+	s.Equal(11, RunInterval())
 }
 
 func (s *ConfigTestSuite) TestStartHour() {

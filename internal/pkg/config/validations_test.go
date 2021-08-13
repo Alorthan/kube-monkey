@@ -14,9 +14,9 @@ func TestValidateConfigs(t *testing.T) {
 
 	assert.Nil(t, ValidateConfigs())
 
-	viper.Set(param.RunHour, 24)
-	assert.EqualError(t, ValidateConfigs(), "RunHour: "+param.RunHour+" is outside valid range of [0,23]")
-	viper.Set(param.RunHour, 23)
+	viper.Set(param.RunInterval, 601)
+	assert.EqualError(t, ValidateConfigs(), "RunInterval: "+param.RunInterval+" is outside valid range of ]0,600]")
+	viper.Set(param.RunInterval, 23)
 
 	viper.Set(param.StartHour, 24)
 	assert.EqualError(t, ValidateConfigs(), "StartHour: "+param.StartHour+" is outside valid range of [0,23]")
@@ -29,9 +29,6 @@ func TestValidateConfigs(t *testing.T) {
 	viper.Set(param.StartHour, 23)
 	assert.EqualError(t, ValidateConfigs(), "StartHour: "+param.StartHour+" must be less than "+param.EndHour)
 	viper.Set(param.StartHour, 22)
-
-	viper.Set(param.RunHour, 23)
-	assert.EqualError(t, ValidateConfigs(), "RunHour: "+param.RunHour+" should be less than "+param.StartHour)
 
 }
 
@@ -57,4 +54,10 @@ func TestIsValidHeader(t *testing.T) {
 
 	header = "header1Key:"
 	assert.False(t, isValidHeader(header))
+}
+
+func TestIsValidInterval(t *testing.T) {
+	assert.False(t, IsValidInterval(0))
+	assert.False(t, IsValidInterval(601))
+	assert.True(t, IsValidInterval(42))
 }
