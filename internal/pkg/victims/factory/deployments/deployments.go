@@ -20,13 +20,13 @@ func New(dep *appsv1.Deployment) (*Deployment, error) {
 	if err != nil {
 		return nil, err
 	}
-	mtbf, err := meanTimeBetweenFailures(dep)
+	minbf, err := meanTimeBetweenFailures(dep)
 	if err != nil {
 		return nil, err
 	}
 	kind := fmt.Sprintf("%T", *dep)
 
-	return &Deployment{VictimBase: victims.New(kind, dep.Name, dep.Namespace, ident, mtbf)}, nil
+	return &Deployment{VictimBase: victims.New(kind, dep.Name, dep.Namespace, ident, minbf)}, nil
 }
 
 // Returns the value of the label defined by config.IdentLabelKey
@@ -43,21 +43,21 @@ func identifier(kubekind *appsv1.Deployment) (string, error) {
 }
 
 // Read the mean-time-between-failures value defined by the Deployment
-// in the label defined by config.MtbfLabelKey
+// in the label defined by config.MinbfLabelKey
 func meanTimeBetweenFailures(kubekind *appsv1.Deployment) (int, error) {
-	mtbf, ok := kubekind.Labels[config.MtbfLabelKey]
+	minbf, ok := kubekind.Labels[config.MinbfLabelKey]
 	if !ok {
-		return -1, fmt.Errorf("%T %s does not have %s label", kubekind, kubekind.Name, config.MtbfLabelKey)
+		return -1, fmt.Errorf("%T %s does not have %s label", kubekind, kubekind.Name, config.MinbfLabelKey)
 	}
 
-	mtbfInt, err := strconv.Atoi(mtbf)
+	minbfInt, err := strconv.Atoi(minbf)
 	if err != nil {
 		return -1, err
 	}
 
-	if !(mtbfInt > 0) {
-		return -1, fmt.Errorf("Invalid value for label %s: %d", config.MtbfLabelKey, mtbfInt)
+	if !(minbfInt > 0) {
+		return -1, fmt.Errorf("Invalid value for label %s: %d", config.MinbfLabelKey, minbfInt)
 	}
 
-	return mtbfInt, nil
+	return minbfInt, nil
 }

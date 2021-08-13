@@ -33,7 +33,7 @@ func TestNew(t *testing.T) {
 		NAME,
 		map[string]string{
 			config.IdentLabelKey: IDENTIFIER,
-			config.MtbfLabelKey:  "1",
+			config.MinbfLabelKey: "1",
 		},
 	)
 	ds, err := New(&v1ds)
@@ -43,14 +43,14 @@ func TestNew(t *testing.T) {
 	assert.Equal(t, NAME, ds.Name())
 	assert.Equal(t, NAMESPACE, ds.Namespace())
 	assert.Equal(t, IDENTIFIER, ds.Identifier())
-	assert.Equal(t, 1, ds.Mtbf())
+	assert.Equal(t, 1, ds.Minbf())
 }
 
 func TestInvalidIdentifier(t *testing.T) {
 	v1ds := newDaemonSet(
 		NAME,
 		map[string]string{
-			config.MtbfLabelKey: "1",
+			config.MinbfLabelKey: "1",
 		},
 	)
 	_, err := New(&v1ds)
@@ -58,7 +58,7 @@ func TestInvalidIdentifier(t *testing.T) {
 	assert.Errorf(t, err, "Expected an error if "+config.IdentLabelKey+" label doesn't exist")
 }
 
-func TestInvalidMtbf(t *testing.T) {
+func TestInvalidMinbf(t *testing.T) {
 	v1ds := newDaemonSet(
 		NAME,
 		map[string]string{
@@ -67,27 +67,27 @@ func TestInvalidMtbf(t *testing.T) {
 	)
 	_, err := New(&v1ds)
 
-	assert.Errorf(t, err, "Expected an error if "+config.MtbfLabelKey+" label doesn't exist")
+	assert.Errorf(t, err, "Expected an error if "+config.MinbfLabelKey+" label doesn't exist")
 
 	v1ds = newDaemonSet(
 		NAME,
 		map[string]string{
 			config.IdentLabelKey: IDENTIFIER,
-			config.MtbfLabelKey:  "string",
+			config.MinbfLabelKey: "string",
 		},
 	)
 	_, err = New(&v1ds)
 
-	assert.Errorf(t, err, "Expected an error if "+config.MtbfLabelKey+" label can't be converted a Int type")
+	assert.Errorf(t, err, "Expected an error if "+config.MinbfLabelKey+" label can't be converted a Int type")
 
 	v1ds = newDaemonSet(
 		NAME,
 		map[string]string{
 			config.IdentLabelKey: IDENTIFIER,
-			config.MtbfLabelKey:  "0",
+			config.MinbfLabelKey: "0",
 		},
 	)
 	_, err = New(&v1ds)
 
-	assert.Errorf(t, err, "Expected an error if "+config.MtbfLabelKey+" label is lower than 1")
+	assert.Errorf(t, err, "Expected an error if "+config.MinbfLabelKey+" label is lower than 1")
 }

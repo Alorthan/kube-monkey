@@ -33,7 +33,7 @@ type VictimBaseTemplate interface {
 	Name() string
 	Namespace() string
 	Identifier() string
-	Mtbf() int
+	Minbf() int
 
 	VictimAPICalls
 }
@@ -67,13 +67,13 @@ type VictimBase struct {
 	name       string
 	namespace  string
 	identifier string
-	mtbf       int
+	minbf      int
 
 	VictimBaseTemplate
 }
 
-func New(kind, name, namespace, identifier string, mtbf int) *VictimBase {
-	return &VictimBase{kind: kind, name: name, namespace: namespace, identifier: identifier, mtbf: mtbf}
+func New(kind, name, namespace, identifier string, minbf int) *VictimBase {
+	return &VictimBase{kind: kind, name: name, namespace: namespace, identifier: identifier, minbf: minbf}
 }
 
 func (v *VictimBase) Kind() string {
@@ -92,8 +92,8 @@ func (v *VictimBase) Identifier() string {
 	return v.identifier
 }
 
-func (v *VictimBase) Mtbf() int {
-	return v.mtbf
+func (v *VictimBase) Minbf() int {
+	return v.minbf
 }
 
 // RunningPods returns a list of running pods for the victim

@@ -26,7 +26,7 @@ const (
 	IdentLabelKey                 = "kube-monkey/identifier"
 	EnabledLabelKey               = "kube-monkey/enabled"
 	EnabledLabelValue             = "enabled"
-	MtbfLabelKey                  = "kube-monkey/mtbf"
+	MinbfLabelKey                 = "kube-monkey/minbf"
 	KillTypeLabelKey              = "kube-monkey/kill-mode"
 	KillValueLabelKey             = "kube-monkey/kill-value"
 	KillRandomMaxLabelValue       = "random-max-percent"

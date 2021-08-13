@@ -20,13 +20,13 @@ func New(ss *corev1.StatefulSet) (*StatefulSet, error) {
 	if err != nil {
 		return nil, err
 	}
-	mtbf, err := meanTimeBetweenFailures(ss)
+	minbf, err := meanTimeBetweenFailures(ss)
 	if err != nil {
 		return nil, err
 	}
 	kind := fmt.Sprintf("%T", *ss)
 
-	return &StatefulSet{VictimBase: victims.New(kind, ss.Name, ss.Namespace, ident, mtbf)}, nil
+	return &StatefulSet{VictimBase: victims.New(kind, ss.Name, ss.Namespace, ident, minbf)}, nil
 }
 
 // Returns the value of the label defined by config.IdentLabelKey
@@ -43,21 +43,21 @@ func identifier(kubekind *corev1.StatefulSet) (string, error) {
 }
 
 // Read the mean-time-between-failures value defined by the StatefulSet
-// in the label defined by config.MtbfLabelKey
+// in the label defined by config.MinbfLabelKey
 func meanTimeBetweenFailures(kubekind *corev1.StatefulSet) (int, error) {
-	mtbf, ok := kubekind.Labels[config.MtbfLabelKey]
+	minbf, ok := kubekind.Labels[config.MinbfLabelKey]
 	if !ok {
-		return -1, fmt.Errorf("%T %s does not have %s label", kubekind, kubekind.Name, config.MtbfLabelKey)
+		return -1, fmt.Errorf("%T %s does not have %s label", kubekind, kubekind.Name, config.MinbfLabelKey)
 	}
 
-	mtbfInt, err := strconv.Atoi(mtbf)
+	minbfInt, err := strconv.Atoi(minbf)
 	if err != nil {
 		return -1, err
 	}
 
-	if !(mtbfInt > 0) {
-		return -1, fmt.Errorf("Invalid value for label %s: %d", config.MtbfLabelKey, mtbfInt)
+	if !(minbfInt > 0) {
+		return -1, fmt.Errorf("Invalid value for label %s: %d", config.MinbfLabelKey, minbfInt)
 	}
 
-	return mtbfInt, nil
+	return minbfInt, nil
 }

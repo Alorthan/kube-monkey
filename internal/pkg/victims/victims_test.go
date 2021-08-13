@@ -76,7 +76,7 @@ func TestVictimBaseTemplateGetters(t *testing.T) {
 	assert.Equal(t, "name", v.Name())
 	assert.Equal(t, NAMESPACE, v.Namespace())
 	assert.Equal(t, IDENTIFIER, v.Identifier())
-	assert.Equal(t, 1, v.Mtbf())
+	assert.Equal(t, 1, v.Minbf())
 }
 
 func TestRunningPods(t *testing.T) {

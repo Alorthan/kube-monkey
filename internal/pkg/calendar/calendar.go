@@ -38,18 +38,13 @@ func NextRuntime(loc *time.Location, r int) time.Time {
 
 	// Is today a weekday and are we still in time for it?
 	if isWeekday(now) {
-		runtimeToday := time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), r, 0, 0, loc)
-		if runtimeToday.After(now) {
-			return runtimeToday
-		}
+		return now.Add(time.Duration(r) * time.Minute)
 	}
 
 	// Missed the train for today. Schedule on next weekday
 	nexWeekDay := nextWeekday(loc)
 	year, month, day := nexWeekDay.Date()
-	hours := nexWeekDay.Hour()
-	minutes := nexWeekDay.Minute()
-	return time.Date(year, month, day, hours, minutes, 0, 0, loc)
+	return time.Date(year, month, day, 0, 0, 0, 0, loc)
 }
 
 // RandomTimeInRange returns a random time within the range specified by RunInterval

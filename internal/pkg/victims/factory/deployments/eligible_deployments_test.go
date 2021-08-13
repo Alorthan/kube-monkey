@@ -15,7 +15,7 @@ func TestEligibleDeployments(t *testing.T) {
 		NAME,
 		map[string]string{
 			"kube-monkey/identifier": "1",
-			"kube-monkey/mtbf":       "1",
+			"kube-monkey/minbf":      "1",
 		},
 	)
 
@@ -30,7 +30,7 @@ func TestIsEnrolled(t *testing.T) {
 		NAME,
 		map[string]string{
 			config.IdentLabelKey:   "1",
-			config.MtbfLabelKey:    "1",
+			config.MinbfLabelKey:   "1",
 			config.EnabledLabelKey: config.EnabledLabelValue,
 		},
 	)
@@ -49,7 +49,7 @@ func TestIsNotEnrolled(t *testing.T) {
 		NAME,
 		map[string]string{
 			config.IdentLabelKey:   "1",
-			config.MtbfLabelKey:    "1",
+			config.MinbfLabelKey:   "1",
 			config.EnabledLabelKey: "x",
 		},
 	)
@@ -66,14 +66,14 @@ func TestIsNotEnrolled(t *testing.T) {
 func TestKillType(t *testing.T) {
 
 	ident := "1"
-	mtbf := "1"
+	minbf := "1"
 	killMode := "kill-mode"
 
 	v1depl := newDeployment(
 		NAME,
 		map[string]string{
 			config.IdentLabelKey: ident,
-			config.MtbfLabelKey:  mtbf,
+			config.MinbfLabelKey: minbf,
 		},
 	)
 
@@ -89,7 +89,7 @@ func TestKillType(t *testing.T) {
 		NAME,
 		map[string]string{
 			config.IdentLabelKey:    ident,
-			config.MtbfLabelKey:     mtbf,
+			config.MinbfLabelKey:    minbf,
 			config.KillTypeLabelKey: killMode,
 		},
 	)
@@ -104,14 +104,14 @@ func TestKillType(t *testing.T) {
 func TestKillValue(t *testing.T) {
 
 	ident := "1"
-	mtbf := "1"
+	minbf := "1"
 	killValue := "0"
 
 	v1depl := newDeployment(
 		NAME,
 		map[string]string{
 			config.IdentLabelKey: ident,
-			config.MtbfLabelKey:  mtbf,
+			config.MinbfLabelKey: minbf,
 		},
 	)
 
@@ -127,7 +127,7 @@ func TestKillValue(t *testing.T) {
 		NAME,
 		map[string]string{
 			config.IdentLabelKey:     ident,
-			config.MtbfLabelKey:      mtbf,
+			config.MinbfLabelKey:     minbf,
 			config.KillValueLabelKey: killValue,
 		},
 	)
@@ -144,7 +144,7 @@ func TestKillValue(t *testing.T) {
 		NAME,
 		map[string]string{
 			config.IdentLabelKey:     ident,
-			config.MtbfLabelKey:      mtbf,
+			config.MinbfLabelKey:     minbf,
 			config.KillValueLabelKey: killValue,
 		},
 	)

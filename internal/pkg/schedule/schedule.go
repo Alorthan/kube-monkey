@@ -83,7 +83,7 @@ func New() (*Schedule, error) {
 	for _, victim := range victims {
 		killtime := CalculateKillTime()
 
-		if ShouldScheduleChaos(victim.Mtbf()) {
+		if ShouldScheduleChaos(victim.Minbf()) {
 			schedule.Add(chaos.New(killtime, victim))
 		}
 	}
@@ -102,12 +102,12 @@ func CalculateKillTime() time.Time {
 	return calendar.RandomTimeInRange(config.RunInterval(), loc)
 }
 
-func ShouldScheduleChaos(mtbf int) bool {
+func ShouldScheduleChaos(minbf int) bool {
 	if config.DebugEnabled() && config.DebugForceShouldKill() {
 		return true
 	}
 
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	probability := 1 / float64(mtbf)
+	probability := 1 / float64(minbf)
 	return probability > r.Float64()
 }

@@ -120,7 +120,7 @@ func TestShouldScheduleChaosNow(t *testing.T) {
 	config.SetDefaults()
 }
 
-func TestShouldScheduleChaosMtbf(t *testing.T) {
+func TestShouldScheduleChaosMinbf(t *testing.T) {
 	assert.False(t, ShouldScheduleChaos(100000000000))
 	assert.True(t, ShouldScheduleChaos(1))
 }

@@ -25,7 +25,7 @@ kube-monkey works on an opt-in model and will only schedule terminations for Kub
 Opt-in is done by setting the following labels on a k8s app:
 
 **`kube-monkey/enabled`**: Set to **`"enabled"`** to opt-in to kube-monkey  
-**`kube-monkey/mtbf`**: Mean time between failure (in hours). For example, if set to **`"3"`**, the k8s app can expect to have a Pod
+**`kube-monkey/minbf`**: Mean interval number between failure (in minutes). For example, if set to **`"3"`**, the k8s app can expect to have a Pod
 killed approximately every third weekday.  
 **`kube-monkey/identifier`**: A unique identifier for the k8s apps. This is used to identify the pods
 that belong to a k8s app as Pods inherit labels from their k8s app. So, if kube-monkey detects that app `foo` has enrolled to be a victim, kube-monkey will look for all pods that have the label `kube-monkey/identifier: foo` to determine which pods are candidates for killing. The recommendation is to set this value to be the same as the app's name.  
@@ -56,7 +56,7 @@ spec:
       labels:
         kube-monkey/enabled: enabled
         kube-monkey/identifier: monkey-victim
-        kube-monkey/mtbf: '2'
+        kube-monkey/minbf: '2'
         kube-monkey/kill-mode: "fixed"
         kube-monkey/kill-value: '1'
 [... omitted ...]
@@ -74,7 +74,7 @@ metadata:
   labels:
     kube-monkey/enabled: enabled
     kube-monkey/identifier: monkey-victim
-    kube-monkey/mtbf: '2'
+    kube-monkey/minbf: '2'
     kube-monkey/kill-mode: "fixed"
     kube-monkey/kill-value: '1'
 spec:
@@ -102,7 +102,7 @@ host="https://your-apiserver-url.com:apiport"
 #### Scheduling time
 Scheduling happens once a day on Weekdays - this is when a schedule for terminations for the current day is generated. During scheduling, kube-monkey will:  
 1. Generate a list of eligible k8s apps (k8s apps that have opted-in and are not blacklisted, if specified, and are whitelisted, if specified)
-2. For each eligible k8s app, flip a biased coin (bias determined by `kube-monkey/mtbf`) to determine if a pod for that k8s app should be killed today
+2. For each eligible k8s app, flip a biased coin (bias determined by `kube-monkey/minbf`) to determine if a pod for that k8s app should be killed today
 3. For each victim, calculate a random time when a pod will be killed
 
 #### Termination time
